@@ -28,4 +28,13 @@ namespace dotnetusers.DTO_s
         public List<string> Role { get; set; } = null!;
         public int Id { get; set; }
     }
+
+    public class LoginDTO
+    {
+        [Required(ErrorMessage = "O email é obrigatório!")]
+        [EmailAddress(ErrorMessage = "O email deve ser válido!")]
+        public string Email { get; set; } = null!;
+        [Required(ErrorMessage = "A senha é obrigatória!")]
+        public string Senha { get; set; } = null!;
+    }
 }

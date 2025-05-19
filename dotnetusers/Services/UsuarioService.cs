@@ -49,5 +49,20 @@ namespace dotnetusers.Services
 
             return await _userRepository.AddAsync(novoUsuario);
         }
+
+        public async Task<Usuario?> AutenticarAsync(string email, string senha)
+        {
+            var usuario = await _userRepository.Context.Usuarios
+            .Include(u => u.Roles)
+            .FirstOrDefaultAsync(u => u.Email == email);
+
+            if (usuario == null)
+                return null;
+
+            if (!_passwordService.VerifyPassword(usuario.Passwordhashed, senha))
+                return null;
+
+            return usuario;
+        }
     }
 }

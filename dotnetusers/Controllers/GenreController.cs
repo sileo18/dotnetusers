@@ -1,6 +1,7 @@
 ﻿using dotnetusers.Domain;
 using dotnetusers.DTO_s;
 using dotnetusers.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace dotnetusers.Controllers
@@ -16,6 +17,7 @@ namespace dotnetusers.Controllers
             _genreService = genreService;
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Add([FromBody] CreateGenreDTO genre)
         {
