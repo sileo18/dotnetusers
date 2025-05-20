@@ -41,13 +41,21 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddSingleton<S3Service>();
 builder.Services.AddScoped<PasswordService>();
+
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+
 builder.Services.AddScoped<ITrackKeyRepository, TrackKeyRepository>();
 builder.Services.AddScoped<ITrackKeyService, TrackKeyService>();
+
 builder.Services.AddScoped<IGenreRepository, GenreRepository>();
 builder.Services.AddScoped<IGenreService, GenreService>();
+
+builder.Services.AddScoped<ITrackRepository, TrackRepository>();
+builder.Services.AddScoped<ITrackService, TrackService>();
+
 builder.Services.AddScoped<GlobalExceptionHandler>();
 
 var app = builder.Build();

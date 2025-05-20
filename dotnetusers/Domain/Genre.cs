@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace dotnetusers.Domain
 {
@@ -18,9 +19,9 @@ namespace dotnetusers.Domain
 
         [Column("nome")]
         [StringLength(50)]
-        public string Nome { get; set; }        
+        public string Nome { get; set; }
 
-        [InverseProperty(nameof(Track.Genre))]
+        [JsonIgnore]
         public virtual ICollection<Track> Tracks { get; set; }
     }
 }

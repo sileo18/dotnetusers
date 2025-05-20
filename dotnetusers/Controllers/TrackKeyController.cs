@@ -1,6 +1,7 @@
 ﻿using dotnetusers.Domain;
 using dotnetusers.DTO_s;
 using dotnetusers.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,6 +17,7 @@ namespace dotnetusers.Controllers
             _trackKeyService = trackKeyService;
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Add([FromBody] CreateTrackKeyDTO trackKeyDTO)
         {
@@ -37,6 +39,7 @@ namespace dotnetusers.Controllers
                  result);           
         }
 
+        [Authorize]
         [HttpGet("{id}", Name = "GetKeyById")]
         public async Task<IActionResult> GetById(int id)
         {

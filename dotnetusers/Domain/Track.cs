@@ -7,6 +7,12 @@ namespace dotnetusers.Domain
     [Table("tracks")]
     public class Track
     {
+        public Track() 
+        {
+            
+            Genres = new HashSet<Genre>();
+        }
+
         [Key]
         [Column("id")]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -24,8 +30,8 @@ namespace dotnetusers.Domain
         [Column("audio_url")]
         public string AudioUrl { get; set; } = null!;
 
-        [Column("created_at", TypeName = "timestamp without time zone")]
-        public DateTime? CreatedAt { get; set; }
+        [Column("created_at", TypeName = "timestamp with time zone")]
+        public DateTime CreatedAt { get; set; }
 
         [Required]
         [Column("usuario_id")]
@@ -36,14 +42,6 @@ namespace dotnetusers.Domain
         [JsonIgnore]
         public virtual Usuario Usuario { get; set; } = null!;        
 
-        [Column("genre_id")]
-        public int? GenreId { get; set; }
-
-        [ForeignKey("GenreId")]
-        [InverseProperty("Tracks")]
-        [JsonIgnore]
-        public virtual Genre Genre { get; set; } = null!;
-
         [Column("track_key_id")]
         public int? KeyId { get; set; }
 
@@ -52,8 +50,7 @@ namespace dotnetusers.Domain
         [JsonIgnore]
         public virtual TrackKeys Key { get; set; } = null!;
 
-
-
+        public virtual ICollection<Genre> Genres { get; set; }
 
     }
 }

@@ -39,7 +39,7 @@ namespace dotnetusers.Controllers
                 new {id = result.Id},
                 result);
         }
-
+        [Authorize]
         [HttpGet("{id}", Name = "GetGenreById")]
         public async Task<IActionResult> GetById(int id)
         {

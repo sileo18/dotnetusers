@@ -63,21 +63,13 @@ public partial class ApplicationDbContext : DbContext
 
         modelBuilder.Entity<Track>(entity =>
         {
-            entity.ToTable("tracks"); // Ou "tracks"
+            entity.ToTable("tracks"); // Nome da tabela
 
-            entity.HasOne(t => t.Usuario) // Track tem um Usuario
-                  .WithMany(u => u.UserTracks) // Usuario tem muitas Tracks
-                  .HasForeignKey(t => t.UsuarioId) // A FK em Track é UsuarioId
-                  .IsRequired() // Uma track deve ter um usuário
-                  .OnDelete(DeleteBehavior.Cascade); // Se o usuário for deletado, suas tracks também são (ou .Restrict)
-
-            // --- Relação Um-para-Muitos: Genre e Track ---
-            // (Um Genre pode estar em muitas Tracks, uma Track tem um Genre)
-            entity.HasOne(t => t.Genre) // Track tem um Genre (opcional)
-                  .WithMany(g => g.Tracks) // Genre tem muitas Tracks
-                  .HasForeignKey(t => t.GenreId) // A FK em Track é GenreId
-                  .IsRequired(false) // Torna a relação opcional (GenreId pode ser nulo)
-                  .OnDelete(DeleteBehavior.SetNull); // Se um Genre for deletado, o GenreId nas tracks vira NULL
+            entity.HasOne(t => t.Usuario)
+                  .WithMany(u => u.UserTracks) // Nome da coleção em Usuario
+                  .HasForeignKey(t => t.UsuarioId)
+                  .IsRequired()
+                  .OnDelete(DeleteBehavior.Cascade); // Se o usuário for deletado, suas tracks também são (ou .Restrict)            
 
             // --- Relação Um-para-Muitos: MusicalKey e Track ---
             // (Um MusicalKey pode estar em muitas Tracks, uma Track tem um MusicalKey)
@@ -85,7 +77,19 @@ public partial class ApplicationDbContext : DbContext
                   .WithMany(k => k.TracksInThisKey)   // MusicalKey tem muitas Tracks
                   .HasForeignKey(t => t.KeyId) // A FK em Track é MusicalKeyId
                   .IsRequired(false) // Torna a relação opcional
-                  .OnDelete(DeleteBehavior.SetNull); // Se um MusicalKey for deletado, o MusicalKeyId nas tracks vira NULL
+                  .OnDelete(DeleteBehavior.SetNull);
+
+            entity.HasMany(t => t.Genres) // Track tem muitos Genres
+              .WithMany(g => g.Tracks) // Genre tem muitas Tracks
+              .UsingEntity<Dictionary<string, object>>(
+                  "TrackGenres", // Nome da entidade de junção para o EF Core
+                  j => j.HasOne<Genre>().WithMany().HasForeignKey("GenreId").OnDelete(DeleteBehavior.Cascade),
+                  j => j.HasOne<Track>().WithMany().HasForeignKey("TrackId").OnDelete(DeleteBehavior.Cascade),
+                  j =>
+                  {
+                      j.HasKey("TrackId", "GenreId"); // Chave primária composta
+                      j.ToTable("track_genres"); // NOME DA TABELA DE JUNÇÃO NO BANCO DE DADOS
+                  });// Se um MusicalKey for deletado, o MusicalKeyId nas tracks vira NULL
         });
 
         modelBuilder.Entity<Genre>(entity =>
