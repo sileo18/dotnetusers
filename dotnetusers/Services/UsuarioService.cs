@@ -43,7 +43,7 @@ namespace dotnetusers.Services
                 Nome = usuarioDTO.Nome,
                 Email = usuarioDTO.Email,
                 Passwordhashed = _passwordService.HashPassword(usuarioDTO.Senha),
-                Active = true,
+                Active = usuarioDTO.Active,
                 Roles = new List<Role> { role },
                 };
 

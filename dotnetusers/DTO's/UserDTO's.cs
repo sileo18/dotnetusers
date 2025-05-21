@@ -15,7 +15,7 @@ namespace dotnetusers.DTO_s
 
         [Required(ErrorMessage = "A senha é obrigatória!")]
         public string Senha { get; set; } = null!;
-        public bool Active { get; set; } = true;
+        public bool Active { get; set; }
 
         [Required(ErrorMessage = "A role é obrigatória!")]
         public string Role { get; set; } = null!;
