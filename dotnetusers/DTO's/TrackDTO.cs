@@ -28,7 +28,7 @@ namespace dotnetusers.DTO_s
         // Para [FromForm], Image pode ser opcional se você tiver um placeholder ou lógica
         // Se for obrigatório, adicione [Required]
         [Required(ErrorMessage = "A imagem da track é obrigatória.")]
-        public IFormFile Image { get; set; } = null!; // null! se for obrigatório e verificado no controller
+        public IFormFile Image { get; set; } = null!; 
 
         [Required(ErrorMessage = "O arquivo de áudio é obrigatório.")]
         public IFormFile Audio { get; set; } = null!;

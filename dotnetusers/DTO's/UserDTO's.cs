@@ -19,6 +19,9 @@ namespace dotnetusers.DTO_s
 
         [Required(ErrorMessage = "A role é obrigatória!")]
         public string Role { get; set; } = null!;
+
+        [Required(ErrorMessage = "A imagem de usuário é obrigatória.")]
+        public IFormFile Image { get; set; } = null!;
     }
 
     public class ReturnUserDTO

@@ -25,7 +25,7 @@ namespace dotnetusers.Controllers
         }
 
         [HttpPost("create")]
-        public async Task<ActionResult<Usuario>> create([FromBody] CreateUserDTO usuarioDTO)
+        public async Task<ActionResult<Usuario>> create([FromForm] CreateUserDTO usuarioDTO)
         {
             if (!ModelState.IsValid)
             {
@@ -35,6 +35,7 @@ namespace dotnetusers.Controllers
             try
             {
                 var usuario = await usuarioService.AddAsync(usuarioDTO);
+
                 ReturnUserDTO usuarioDTOed = new ReturnUserDTO
                 {
                     Id = usuario.Id,

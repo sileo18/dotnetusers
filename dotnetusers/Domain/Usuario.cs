@@ -39,6 +39,9 @@ public partial class Usuario
     [Column("createdat")]
     public DateTime Createdat { get; set; }
 
+    [Column("image_url")]
+    public String ImageUrl { get; set; } = null!;
+
     [ForeignKey("Usuarioid")]
     [InverseProperty("Usuarios")]
     public virtual ICollection<Role> Roles { get; set; } = new List<Role>();

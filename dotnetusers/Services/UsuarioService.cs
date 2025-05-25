@@ -11,14 +11,19 @@ namespace dotnetusers.Services
 
         private readonly PasswordService _passwordService;
 
-        public UsuarioService(IUserRepository userRepository, PasswordService passwordService)
+        private readonly S3Service _s3Service;
+
+        public UsuarioService(IUserRepository userRepository, PasswordService passwordService, S3Service s3Service)
         {
             _userRepository = userRepository;
             _passwordService = passwordService;
+            _s3Service = s3Service;
         }
 
         public async Task<Usuario> AddAsync(CreateUserDTO usuarioDTO)
         {
+
+            String imgUrl = "null";
 
             var existingUser = await _userRepository.Context.Usuarios.FirstOrDefaultAsync(
                 r => r.Email == usuarioDTO.Email);
@@ -38,13 +43,31 @@ namespace dotnetusers.Services
                 throw new ArgumentException("Role não encontrada!");
             }
 
-                Usuario novoUsuario = new Usuario
+            if (usuarioDTO.Image != null && usuarioDTO.Image.Length > 0)
+            {
+
+                imgUrl = await _s3Service.UploadFileAsync(usuarioDTO.Image.OpenReadStream(), usuarioDTO.Image.FileName, usuarioDTO.Image.ContentType);
+
+                if (imgUrl == null)
+                {
+
+                    throw new Exception("Falha ao fazer upload da imagem.");
+                }
+            }
+            else
+            {
+                
+                throw new ArgumentException("Imagem da track é obrigatória.");
+            }
+
+            Usuario novoUsuario = new Usuario
             {
                 Nome = usuarioDTO.Nome,
                 Email = usuarioDTO.Email,
                 Passwordhashed = _passwordService.HashPassword(usuarioDTO.Senha),
                 Active = usuarioDTO.Active,
                 Roles = new List<Role> { role },
+                ImageUrl = imgUrl,
                 };
 
             return await _userRepository.AddAsync(novoUsuario);
