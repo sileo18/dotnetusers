@@ -44,9 +44,28 @@ namespace dotnetusers.Controllers
         [HttpGet("recent", Name = "GetMostRecent")]
         public async Task<IActionResult> GetMostRecent([FromQuery] int pageNumber, int pageSize)
         {
-            Console.WriteLine("CHEGUEI");
+            
             var tracks = await _trackService.GetMostRecent(pageNumber, pageSize);
             return Ok(tracks);
+        }
+
+        [HttpGet("genre", Name = "GetTracksByGenresId")]
+        public async Task<IActionResult> GetTracksByGenresId([FromQuery] int[] genresId, int pageNumber, int pageSize)
+        {
+            if (genresId == null || genresId.Length == 0)
+            {
+                return BadRequest("Invalid genres ID.");
+            }
+
+            var tracks = await _trackService.GetTracksByMultiplesGenresId(genresId, pageNumber, pageSize);
+
+            if (tracks == null || !tracks.Any())
+            {
+                return NotFound("No tracks found for the provided genres ID.");
+            }
+
+            return Ok(tracks);
+
         }
     }
 }

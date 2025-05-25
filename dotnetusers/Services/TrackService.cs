@@ -104,9 +104,7 @@ namespace dotnetusers.Services
         }
 
         public Task<IEnumerable<Track>> GetMostRecent(int pageNumber, int pageSize)
-        {
-            Console.WriteLine(pageNumber);
-            Console.WriteLine(pageSize);
+        {          
 
             Task<IEnumerable<Track>> tracks = _trackRepository.GetMostRecent(pageNumber, pageSize);
 
@@ -118,14 +116,13 @@ namespace dotnetusers.Services
             return tracks;
         }
 
-        public Task<IEnumerable<Track>> GetTracksByMultiplesGenresId(int[] genresId, int pageNumber = 1, int pageSize = 10)
-        {
-            throw new NotImplementedException();
-        }
+        public Task<IEnumerable<Track>> GetTracksByMultiplesGenresId(int[] genresId, int pageNumber, int pageSize)
+        {        
 
-        public Task<IEnumerable<Track>> GetTracksByUserId(int userId, int pageNumber = 1, int pageSize = 10)
-        {
-            throw new NotImplementedException();
+            Task<IEnumerable<Track>> tracks = _trackRepository.GetTracksByMultiplesGenresId(genresId, pageNumber, pageSize);
+
+            return tracks;
         }
+        
     }
 }
