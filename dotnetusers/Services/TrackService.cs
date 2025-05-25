@@ -8,19 +8,28 @@ namespace dotnetusers.Services
     {
         private readonly ITrackRepository _trackRepository;
         private readonly IGenreRepository _genreRepository;
+        private readonly IUserRepository _userRepository;
         private readonly S3Service _s3Service;
 
-        public TrackService(ITrackRepository trackRepository, S3Service s3Service, IGenreRepository genreRepository)
+        public TrackService(ITrackRepository trackRepository, S3Service s3Service, IGenreRepository genreRepository, IUserRepository userRepository)
         {
             _trackRepository = trackRepository;
             _s3Service = s3Service;
             _genreRepository = genreRepository;
+            _userRepository = userRepository;
         }
 
         public async Task<Track> AddAsync(CreateTrackDTO trackDTO)
         {
             string? imgUrl = null;
             string? audioUrl = null;
+
+            var user = _userRepository.GetByIdAsync(trackDTO.UserId);
+
+            if (user == null)
+            {
+                  throw new ArgumentException("Usuário não encontrado.");
+            }
 
             if (trackDTO.Image != null && trackDTO.Image.Length > 0)
             {
