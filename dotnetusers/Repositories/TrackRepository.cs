@@ -52,5 +52,20 @@ namespace dotnetusers.Repositories
         {
             throw new NotImplementedException();
         }
+
+        public Task<IEnumerable<Track>> GetTracksByUserId(int userId, int pageNumber = 1, int pageSize = 10)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<IEnumerable<Track>> GetTracksByMultiplesGenresId(int[] genresId, int pageNumber = 1, int pageSize = 10)
+        {
+            return await _context.Tracks
+                .Where(t => t.Genres.Any(g => genresId.Contains(g.Id)))
+                .OrderByDescending(t => t.CreatedAt)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+        }
     }
 }

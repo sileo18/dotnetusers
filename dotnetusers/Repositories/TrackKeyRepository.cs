@@ -17,11 +17,10 @@ namespace dotnetusers.Repositories
             await _context.SaveChangesAsync();
             return trackKey;
         }
-        public async Task<TrackKeys> GetByIdAsync(int id)
+        public async Task<TrackKeys?> GetByIdAsync(int id) 
         {
-           TrackKeys key = await _context.TrackKeys.FirstOrDefaultAsync(t => t.Id == id);
-
+            TrackKeys? key = await _context.TrackKeys.FirstOrDefaultAsync(t => t.Id == id); 
             return key;
         }
-    }    
+    }
 }

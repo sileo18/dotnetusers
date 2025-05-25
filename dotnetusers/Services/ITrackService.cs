@@ -7,8 +7,12 @@ namespace dotnetusers.Services
     {
         Task<Track> AddAsync(CreateTrackDTO trackDTO);
         Task<Track> GetByIdAsync(int id);
-        Task<IEnumerable<Track>> GetMostRecent(int pageNumber = 1, int pageSize = 10);
+        Task<IEnumerable<Track>> GetMostRecent(int pageNumber, int pageSize);
         //Task<Track> UpdateAsync(UpdateTrackDTO trackDTO);
         Task<bool> DeleteAsync(int id);
+
+        Task<IEnumerable<Track>> GetTracksByUserId(int userId, int pageNumber = 1, int pageSize = 10);
+        Task<IEnumerable<Track>> GetTracksByMultiplesGenresId(int[] genresId, int pageNumber = 1, int pageSize = 10);
+
     }
 }

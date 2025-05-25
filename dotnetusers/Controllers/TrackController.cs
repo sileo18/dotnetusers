@@ -40,5 +40,13 @@ namespace dotnetusers.Controllers
             }
             return Ok(result);
         }
+
+        [HttpGet("recent", Name = "GetMostRecent")]
+        public async Task<IActionResult> GetMostRecent([FromQuery] int pageNumber, int pageSize)
+        {
+            Console.WriteLine("CHEGUEI");
+            var tracks = await _trackService.GetMostRecent(pageNumber, pageSize);
+            return Ok(tracks);
+        }
     }
 }
